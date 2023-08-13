@@ -1,3 +1,4 @@
+import article from 'data/article.json';
 import {
   BlogCard,
   Container,
@@ -15,7 +16,7 @@ export const App = () => {
         <Heading marginBottom="50px" textAlign="center">
           Task 1
         </Heading>
-        <BlogCard />
+        <BlogCard article={article} />
 
         <Heading marginTop="50px" marginBottom="50px" textAlign="center">
           Task 2
