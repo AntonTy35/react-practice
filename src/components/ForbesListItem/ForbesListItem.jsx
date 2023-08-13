@@ -19,6 +19,8 @@ export const ForbesListItem = ({ name, capital, avatar, isIncrease }) => {
   );
 };
 
+//props
+
 ForbesListItem.propTypes = {
   name: PropTypes.string.isRequired,
   capital: PropTypes.number.isRequired,
