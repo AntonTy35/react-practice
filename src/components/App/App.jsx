@@ -1,40 +1,84 @@
-import article from 'data/article.json';
-import data from 'data/data.json';
-import forbes from 'data/forbes.json';
+import { nanoid } from 'nanoid';
 import {
-  BlogCard,
   Container,
+  Grid,
+  GridItem,
+  Header,
+  SearchForm,
   Section,
-  Heading,
-  Statistics,
-  ForbesList,
-  CryptoHistory,
+  Text,
+  Todo,
 } from 'components';
+import { useSelector } from 'react-redux';
+import { getTodos, getRegime, getDeletedTodos } from 'redux/selectors';
+// import { useState } from 'react';
+import { switchRegimes } from 'redux/reducers';
+import { REGIMES } from 'constants/constants';
 
 export const App = () => {
+  // const [regime, setRegime] = useState(REGIMES.ACTUAL);
+
+  const todos = useSelector(getTodos);
+  const deletedTodos = useSelector(getDeletedTodos);
+
+  const regime = useSelector(getRegime);
+
+  const getVisualTodos = () => {
+    switch (regime) {
+      case REGIMES.ACTUAL:
+        return todos;
+      case REGIMES.DELETED:
+        return deletedTodos;
+
+      default:
+        break;
+    }
+  };
+
+  const onSwitchRegime = () => {
+    console.log(REGIMES.DELETED);
+    switch (regime) {
+      case REGIMES.ACTUAL:
+        switchRegimes(REGIMES.DELETED);
+        break;
+      case REGIMES.DELETED:
+        switchRegimes(REGIMES.ACTUAL);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
-    <Section>
-      <Container>
-        <Heading marginBottom="50px" textAlign="center">
-          Task 1
-        </Heading>
-        <BlogCard article={article} />
+    <>
+      <Header />
+      <Section>
+        <Container>
+          <SearchForm />
 
-        <Heading marginTop="50px" marginBottom="50px" textAlign="center">
-          Task 2
-        </Heading>
-        <Statistics stats={data} title={'Statistics'} />
+          <button
+            type="button"
+            style={{ padding: '30px' }}
+            onClick={onSwitchRegime}
+          >
+            {regime === REGIMES.ACTUAL ? 'Actual todos' : 'Deleted todos'}
+          </button>
 
-        <Heading marginTop="50px" marginBottom="50px" textAlign="center">
-          Task 3
-        </Heading>
-        <ForbesList list={forbes} />
+          {getVisualTodos().length === 0 && (
+            <Text textAlign="center">There are no any todos ... </Text>
+          )}
 
-        <Heading marginTop="50px" marginBottom="50px" textAlign="center">
-          Task 4
-        </Heading>
-        <CryptoHistory />
-      </Container>
-    </Section>
+          <Grid>
+            {getVisualTodos().length > 0 &&
+              getVisualTodos().map((todo, index) => (
+                <GridItem key={todo.id}>
+                  <Todo id={todo.id} text={todo.text} counter={index + 1} />
+                </GridItem>
+              ))}
+          </Grid>
+        </Container>
+      </Section>
+    </>
   );
 };
