@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import {
   Container,
   Grid,
@@ -9,7 +9,7 @@ import {
   Text,
   Todo,
 } from 'components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTodos, getRegime, getDeletedTodos } from 'redux/selectors';
 // import { useState } from 'react';
 import { switchRegimes } from 'redux/reducers';
@@ -17,7 +17,7 @@ import { REGIMES } from 'constants/constants';
 
 export const App = () => {
   // const [regime, setRegime] = useState(REGIMES.ACTUAL);
-
+  const dispatch = useDispatch();
   const todos = useSelector(getTodos);
   const deletedTodos = useSelector(getDeletedTodos);
 
@@ -39,10 +39,10 @@ export const App = () => {
     console.log(REGIMES.DELETED);
     switch (regime) {
       case REGIMES.ACTUAL:
-        switchRegimes(REGIMES.DELETED);
+        dispatch(switchRegimes(REGIMES.DELETED));
         break;
       case REGIMES.DELETED:
-        switchRegimes(REGIMES.ACTUAL);
+        dispatch(switchRegimes(REGIMES.ACTUAL));
         break;
 
       default:

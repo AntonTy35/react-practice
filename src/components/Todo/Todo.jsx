@@ -19,14 +19,12 @@ export const Todo = ({ text, counter, id }) => {
   const onDelete = () => {
     switch (regime) {
       case REGIMES.ACTUAL:
-        dispatch(deleteTodo(id)).then(
-          dispatch(addDeletedTodo({ text, counter, id }))
-        );
+        dispatch(deleteTodo(id));
+        dispatch(addDeletedTodo({ text, counter, id }));
         break;
       case REGIMES.DELETED:
-        dispatch(deleteDeletedTodo(id)).then(
-          dispatch(addTodo({ text, counter, id }))
-        );
+        dispatch(deleteDeletedTodo(id));
+        dispatch(addTodo({ text, counter, id }));
         break;
 
       default:
